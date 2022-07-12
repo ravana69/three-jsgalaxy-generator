@@ -1,0 +1,35 @@
+<script type="x-shader/x-vertex" id="vertex">
+    uniform float u_time;
+attribute float a_random;
+
+varying float v_random;
+varying vec2 vUv;
+varying vec3 v_normal;
+
+
+void main() {
+    vUv = uv;
+    
+    vec3 newPos = position.xyz;
+    float wave = sin(newPos.x / 8.0 - u_time) * 1.;
+    wave += sin(newPos.y / 13.0 - u_time) * 1.;
+    
+    newPos.z += wave;
+    
+    
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(newPos, 1.0);
+
+
+    v_random = wave;
+}
+</script>
+
+<script type="x-shader/x-fragment" id="fragment">
+    varying float v_random;
+varying vec2 vUv;
+varying vec3 v_normal;
+    
+void main() {
+    gl_FragColor = vec4(0.886, clamp(v_random, 0.70, 0.78), 0.984, 1.0);
+}
+</script>
